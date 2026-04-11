@@ -80,8 +80,10 @@ Execute every item in order. Do not skip any item regardless of confidence level
 
 ### 8 — Documentation Integrity
 - [ ] Existing comments and docstrings unrelated to the change are preserved.
-- [ ] New public API members have documentation comments if the project's convention requires it.
+- [ ] **Every new or modified exported function, class, method, type, and constant has a complete documentation comment** (JSDoc, docstring, or equivalent). Completeness requires: description, `@param` for each parameter, `@returns` for non-void functions, `@throws` for each exception. A missing or stub documentation comment (`/** TODO */`, `# TODO: document`) is a `FAIL`.
 - [ ] No comments that describe *what* the code does (the code does that). Comments explain *why* where non-obvious.
+- [ ] Internal (non-exported) functions are not required to have documentation comments unless the logic is non-obvious.
+- [ ] `docs/handoff-protocol.md` and `docs/adr/` entries (if written in this cycle) are consistent with the implementation delivered.
 
 ---
 

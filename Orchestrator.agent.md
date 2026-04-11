@@ -4,7 +4,7 @@ description: "Use when: coordinate the full multi-agent lifecycle — planning, 
 argument-hint: "project objective, feature goal, or current workflow status that requires multi-agent coordination"
 model: GPT-5.3-Codex (copilot)
 tools: [agent, read, search, edit, todo]
-agents: ["Planner", "Architect", "Coder", "Auditor", "Tester", "Debugger", "Figma"]
+agents: ["Planner", "Architect", "Coder", "Auditor", "Tester", "Debugger", "DevOps", "Figma"]
 ---
 
 ## Identity
@@ -76,11 +76,18 @@ Before any dispatch, verify:
   4. Do not re-dispatch Coder with a vague "fix the tests" message. Coder receives Debugger's exact Fix Specification.
   5. After Coder re-implements, the task re-enters Phase 5 (Audit) from the beginning.
 
-### Phase 7 — Update
-- Mark the task `DONE` in `docs/todo.md`.
-- Log the commit or changeset reference in the task entry if available.
+### Phase 7 — DevOps
+- Triggered when **all tasks in the current cycle** have reached Tester PASS. DevOps runs once per cycle, not per task.
+- Dispatch **DevOps** with: completed task list, modified file list, and version intent (Orchestrator's preliminary SemVer classification).
+- DevOps returns `STATUS: PASS | FAIL | BLOCKED`.
+- If `FAIL`: resolve the specific violations listed before marking any task DONE. Do not mark tasks DONE while DevOps has open blockers.
+- If `PASS`: proceed to Phase 8.
+
+### Phase 8 — Update
+- Mark all tasks in the cycle as `DONE` in `docs/todo.md`.
+- Record the new version number and CHANGELOG reference in the task entries.
 - Unlock dependent tasks and re-evaluate the dispatch queue.
-- If all tasks are `DONE`, emit a Final Status Report (see Output Format).
+- If all tasks across all cycles are `DONE`, emit a Final Status Report (see Output Format).
 
 ---
 
@@ -91,7 +98,8 @@ Before any dispatch, verify:
 - If Debugger returns `route to: ARCHITECT` on a test failure, halt Coder dispatch. Re-invoke Architect with the failure context before any implementation resumes.
 - If Tester returns `FAIL` with classification `TEST_DEFECT`, route back to Tester only — never to Coder or Debugger. Do not treat a bad test as a code bug.
 - If Architect returns `REQUIRES_REVISION` twice on the same plan, re-invoke Planner to fully re-decompose the failing tasks before Architect reviews again.
-- If any agent returns an incomplete or malformed response, do not retry silently. Log the anomaly and request explicit confirmation before continuing.
+- If DevOps returns `FAIL` or `BLOCKED`, tasks are **not** marked DONE until DevOps issues PASS. DevOps failures are not cosmetic — a broken pipeline or incorrect version is a release defect.
+- If any agent's output does not conform to the format specified in `docs/handoff-protocol.md`, return a PROTOCOL_VIOLATION and re-send the correct payload. Do not proceed on malformed handoffs.
 
 ---
 
