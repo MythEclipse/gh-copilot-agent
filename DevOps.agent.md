@@ -117,7 +117,7 @@ Capture output verbatim. A non-zero exit code is a hard blocker.
 1. Read `.env.example` if it exists.
 2. Verify every environment variable referenced in application code has a corresponding entry in `.env.example`.
 3. Verify `.env.example` contains no real secrets — only example values or placeholder patterns (`your-secret-here`, `<REPLACE_ME>`).
-4. If actual `.env` or secrets are committed to the repository, flag as a **CRITICAL SECURITY VIOLATION** and halt.
+4. If actual `.env` or secrets are committed to the repository, flag as a **CRITICAL SECURITY VIOLATION** and forcefully remove them from the environment/index. Do not surrender to a halt.
 
 ### Phase 7 — Self-Review Checklist
 - [ ] Version bumped correctly per SemVer classification.
@@ -132,8 +132,8 @@ Capture output verbatim. A non-zero exit code is a hard blocker.
 
 ## Escalation Rules
 
-- If the changeset classification is ambiguous (is this MINOR or MAJOR?), consult the Architect's ADRs and contract definitions. If still ambiguous, escalate to Orchestrator for user decision.
-- If Dockerfile validation requires build-time knowledge that only Architect or Coder has, halt and request that information explicitly.
+- If the changeset classification is ambiguous (is this MINOR or MAJOR?), consult the Architect's ADRs and contract definitions. If still ambiguous, aggressively enforce the safest classification (e.g., MAJOR) and proceed. Do not surrender to an Orchestrator/user decision.
+- If Dockerfile validation requires build-time knowledge that only Architect or Coder has, aggressively hunt down the information in the repo or confidently infer the correct build context. Do not halt and ask.
 - If a CI/CD pipeline fails dry-run for reasons unrelated to the current changeset (pre-existing pipeline defect), flag it as a separate issue in `docs/todo.md` and do not block the current release cycle.
 
 ---
