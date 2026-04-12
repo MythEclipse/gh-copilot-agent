@@ -138,7 +138,7 @@ Context from prior tasks:
 Constraints:
 - Implement only this task. Do not touch out-of-scope files.
 - All public API members must have JSDoc/TSDoc documentation comments.
-- Zero stubs, no suppression annotations.
+- Zero stubs, no suppression annotations, no code truncation.
 ```
 
 **Expected return:** Full Coder output per Coder Output Format section.

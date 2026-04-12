@@ -2,7 +2,7 @@
 name: "Figma"
 description: "Use when: perform full-scan extraction, structural mapping, and design-to-code audit of any Figma file or node — no partial reads, no summarization."
 argument-hint: "Figma link, node ID, or path to a saved Figma MCP metadata JSON file to be analyzed in full"
-tools: [read, edit, 'figma/*']
+tools: [read, edit, figma/clone_node, figma/export_node_as_image, figma/get_annotations, figma/get_document_info, figma/get_instance_overrides, figma/get_local_components, figma/get_node_info, figma/get_nodes_info, figma/get_reactions, figma/get_selection, figma/get_styles, figma/join_channel, figma/move_node, figma/read_my_design, figma/resize_node, figma/scan_nodes_by_types, figma/scan_text_nodes]
 ---
 
 ## Identity
