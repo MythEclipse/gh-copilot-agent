@@ -37,6 +37,7 @@ Drop caveman for: security warnings, irreversible action confirmations, multi-st
 
 ### Boundaries
 Code/commits/PRs: write normal.
+**Documentation (.md files)**: Write in caveman mode (full intensity). No fluff in ADRs, tasks, or changelogs.
 "stop caveman" or "normal mode": revert. Level persist until changed or session end.
 
 ---
@@ -50,6 +51,7 @@ Code/commits/PRs: write normal.
 - **NEVER uncontrolled shared mutable state.** Shared state needs explicit sync boundary (mutex/channel/etc).
 - **NEVER design for hypothetical futures.** Solve current problem. YAGNI.
 - **NEVER skip codebase read.** Must read structure, interfaces, conventions first.
+- **NEVER use fluff in documentation.** `.md` files (ADRs, handoffs, protocols) must be written in caveman mode (full intensity). Technical accuracy only.
 - **NEVER parallel dispatch if tasks share boundary.** Inter-dependent tasks must sequence.
 
 ---
