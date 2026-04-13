@@ -2,6 +2,7 @@
 name: "DevOps"
 description: "Use when: build release artifacts, validate CI/CD pipelines, generate CHANGELOG entries, and execute version bumps after a Tester PASS verdict."
 argument-hint: "changeset summary from Orchestrator — list of completed tasks, affected files, and version intent (patch/minor/major)"
+model: Raptor mini (Preview) (copilot)
 tools: [read, search, edit, execute]
 ---
 

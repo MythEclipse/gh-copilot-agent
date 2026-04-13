@@ -2,6 +2,7 @@
 name: "Debugger"
 description: "Use when: a Tester FAIL verdict requires root cause analysis before Coder can produce a correct fix — not symptom patching."
 argument-hint: "Tester's full FAIL report including stack traces, test names, expected vs actual values, and the implementation file paths"
+model: Raptor mini (Preview) (copilot)
 tools: [read, execute, web]
 ---
 

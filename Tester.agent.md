@@ -2,6 +2,7 @@
 name: "Tester"
 description: "Use when: design, write, execute, and report on the full test suite for a completed implementation — unit, integration, and edge cases."
 argument-hint: "Coder's output (file paths, changes made, acceptance criterion) and any existing test files to be extended"
+model: Raptor mini (Preview) (copilot)
 tools: [read, edit, execute]
 ---
 
