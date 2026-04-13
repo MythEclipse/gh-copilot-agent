@@ -15,86 +15,7 @@ This document is the canonical specification for inter-agent communication in th
 
 ## Handoff Specifications
 
-### 1. Orchestrator → Planner
-
-**Trigger:** `docs/todo.md` is missing, stale, or the objective has changed.
-
-**Payload:**
-```
-## Planner Dispatch
-
-Objective: <full project objective, unambiguous>
-
-Constraints:
-- <technical constraints — stack, framework, language, deployment target>
-- <scope constraints — what is explicitly out of scope>
-- <known dependencies — external services, APIs, existing modules>
-
-Existing codebase context:
-- Root path: <project root>
-- Key modules: <list of relevant directories/files>
-
-Current docs/todo.md status: MISSING | STALE (reason: <why stale>)
-```
-
-**Expected return:** Updated `docs/todo.md` + brief ambiguity report.
-
----
-
-### 2. Planner → Architect
-
-**Trigger:** Plan is ready and has passed Planner's self-validation checklist.
-
-**Payload:**
-```
-## Architect Dispatch
-
-Objective: <same as Planner received>
-
-docs/todo.md: <full content of docs/todo.md>
-
-Codebase snapshot:
-- Architecture pattern: <layered | hexagonal | feature-based | monolithic | other>
-- Key existing interfaces/contracts: <file paths>
-- Existing ADRs: <docs/adr/ contents or "None">
-- Tech stack: <language, framework, runtime, DB, external services>
-
-Review requested: Plan Evaluation + Contract Definition + Parallelism Map
-```
-
-**Expected return:** Plan Evaluation table + Contracts Defined + Data Flow Maps + ADRs written + Parallelism Map + `STATUS: APPROVED | REQUIRES_REVISION`.
-
----
-
-### 3. Architect → Orchestrator (approval or revision)
-
-**On APPROVED:**
-```
-## Architect Verdict: APPROVED
-
-Parallelism Map:
-  Sequential: Task N → Task M → ...
-  Parallelizable: Task A ‖ Task B (rationale: <no shared boundary>)
-
-Contracts ready: <list of contract specs by task number>
-Data flow maps ready: <list by task number>
-ADRs written: <docs/adr/NNN-slug.md list or "None">
-```
-
-**On REQUIRES_REVISION:**
-```
-## Architect Verdict: REQUIRES_REVISION
-
-Plan Defects:
-1. <Task N>: <specific defect> → Required correction: <exact fix>
-2. ...
-
-Do not dispatch Coder until Planner resolves all defects above.
-```
-
----
-
-### 4. Figma → Orchestrator (for UI tasks only)
+### 1. Figma → Orchestrator (for UI tasks only)
 
 **Trigger:** Orchestrator identifies a task as UI/design-related.
 
@@ -111,9 +32,9 @@ Target implementation files: <file paths>
 
 ---
 
-### 5. Orchestrator → Coder
+### 2. Orchestrator → Coder
 
-**Trigger:** Task is unblocked, Architect has approved, Figma resolved (if applicable).
+**Trigger:** Task is unblocked, Orchestrator has produced plan + contract/flow specs, Figma resolved (if applicable).
 
 **Payload:**
 ```
@@ -123,7 +44,7 @@ Task: Task <N> — <task description>
 Target file(s): <exact file paths>
 Acceptance criterion: <measurable, testable statement>
 
-Architect contract:
+Orchestrator contract:
 <paste contract spec for this task exactly>
 
 Data flow map:
@@ -145,7 +66,7 @@ Constraints:
 
 ---
 
-### 6. Coder → Auditor
+### 3. Coder → Auditor
 
 **Trigger:** Coder has completed implementation.
 
@@ -156,7 +77,7 @@ Constraints:
 
 Original task: Task <N> — <task description>
 Acceptance criterion: <same as sent to Coder>
-Architect contract: <same contract spec>
+Orchestrator contract: <same contract spec>
 
 Coder output:
 <verbatim paste of Coder's full response>
@@ -166,7 +87,7 @@ Coder output:
 
 ---
 
-### 7. Auditor → Tester (on PASS)
+### 4. Auditor → Tester (on PASS)
 
 **Trigger:** Auditor returns `PASS` verdict.
 
@@ -192,7 +113,7 @@ Auditor notes on test adequacy:
 
 ---
 
-### 8. Tester → Debugger (on FAIL)
+### 5. Tester → Debugger (on FAIL)
 
 **Trigger:** Tester returns `STATUS: FAIL`.
 
@@ -213,7 +134,7 @@ Tester output:
 
 ---
 
-### 9. Debugger → Coder (on IMPLEMENTATION_DEFECT)
+### 6. Debugger → Coder (on IMPLEMENTATION_DEFECT)
 
 **Trigger:** Debugger returns `Route fix to: CODER`.
 
@@ -236,7 +157,7 @@ After Coder re-implements, the flow re-enters **Auditor** (not Tester directly).
 
 ---
 
-### 10. Tester PASS → DevOps
+### 7. Tester PASS → DevOps
 
 **Trigger:** Tester returns `STATUS: PASS` for all tasks in the current cycle.
 
@@ -262,7 +183,7 @@ Project root: <path>
 
 ---
 
-### 11. DevOps → Orchestrator → Mark DONE
+### 8. DevOps → Orchestrator → Mark DONE
 
 **Trigger:** DevOps returns `STATUS: PASS`.
 
@@ -292,4 +213,4 @@ If any agent receives a handoff that does not conform to the specification above
 - **Never truncate** long outputs with "..." or "[...abbreviated...]". Pass the complete text.
 - **Never merge** two agent outputs into one handoff message. Each handoff is from one specific agent.
 - **Always include** the Task number and acceptance criterion in every handoff. Agents must never be asked to infer what task they are working on.
-- **Always include** the Architect contract when dispatching Coder, even on fix cycles.
+- **Always include** the Orchestrator contract when dispatching Coder, even on fix cycles.
