@@ -2,7 +2,7 @@
 name: "Auditor"
 description: "Use when: perform a comprehensive, adversarial review of code for correctness, security, architecture, DRY compliance, and production readiness."
 argument-hint: "Coder's full output — including file paths, line references, test results, and the original task description that was assigned"
-model: Raptor mini (Preview) (copilot)
+model: GPT-4.1 (copilot)
 tools: [read, web]
 ---
 

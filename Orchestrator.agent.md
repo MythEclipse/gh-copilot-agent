@@ -7,7 +7,6 @@ tools: [read, agent, todo]
 agents:
   [
     "Planner",
-    "Architect",
     "Coder",
     "Auditor",
     "Tester",
@@ -74,67 +73,55 @@ Before dispatch, verify:
 2. Active task has strict acceptance criteria. None? Establish yourself. Proceed.
 3. Prior tasks not `FAIL` or `BLOCKED`. Resolve blockers first.
 
-### Phase 1 — Planning
+### Phase 1 — Discovery & Planning
 
-- Invoke **Planner**. Pass objective, constraints.
-- Validate `docs/todo.md`:
-  - Tasks atomic (single file/behavioral unit).
-  - Dependencies explicit, acyclic.
-  - Measurable acceptance criteria.
-- Reject/re-invoke Planner if invalid.
+- Invoke **Planner**. Pass full objective.
+- Planner performs unified Codebase Reconnaissance, Architecture Design (ADRs, Contracts), and Task Decomposition.
+- Validate `docs/todo.md` and Architectural artifacts:
+  - Tasks atomic and dependent.
+  - Contracts/ADRs aligned with objective.
+- If invalid or too vague, re-dispatch Planner with specific correction notes.
 
-### Phase 2 — Architecture Review
+### Phase 2 — Design Sync (Optional)
 
-- Forward `docs/todo.md`, objective to **Architect**.
-- Architect must return `STATUS: APPROVED` or `STATUS: FIXED_AND_APPROVED`. 
-- `FIXED_AND_APPROVED`? Plan was updated by Architect. Proceed to Dispatch immediately.
-- `REQUIRES_REVISION`? Use only if Architect cannot resolve ambiguity or scope mismatch. Route back to Planner. 
-- Inject Architect **Contracts**, **Data Flow Maps**, **Parallelism Map** into dispatch context for Coder.
-- Confirm `docs/adr/` committed before dispatch.
+- Invoke **Figma** ONLY if user explicitly commands it or provides a Figma channel code.
+- No command/code? SKIP Phase 2. Proceed to Phase 3 immediately.
+- If invoked: Resolve Token Manifest, Discrepancy Report. Incorporate into criteria **before** Coder.
 
-**Fast-Track Rule**: If objective is "Micro-change" (affects < 3 files, clear existing pattern)? Architect phase is optional. Planner can self-architect if confidence is high.
-
-### Phase 3 — Design Sync (conditional, before Coder)
-
-- Invoke **Figma** only for UI or design-sync.
-- Resolve Token Manifest, Discrepancy Report. Incorporate into criteria **before** Coder.
-- Figma not blocking for backend/infra.
-
-### Phase 4 — Dispatch
+### Phase 3 — Dispatch
 
 - Pick unblocked task from `docs/todo.md`. Mark `IN PROGRESS`.
 - Dispatch exactly **one task per Coder invocation**.
-- Dispatch message: task desc, target files, acceptance criterion, Architect contract, relevant context.
-- Consult Parallelism Map. Only parallel if Architect declared safe.
+- Dispatch message: task desc, target files, acceptance criterion, Architect/Planner contract, relevant context.
+- Consult Parallelism Map. Only parallel if Planner declared safe.
 - Set timeout. Coder returns incomplete/truncated? Task → `TODO` + failure note.
 
-### Phase 5 — Audit
+### Phase 4 — Audit
 
 - Forward Coder output verbatim to **Auditor**.
 - No filtering, summarizing, editorializing.
 - Auditor returns `FAIL`? Route `REQUIRED FIXES` to Coder. No self-fixing.
-- Auditor returns `PASS`? Go Phase 6.
+- Auditor returns `PASS`? Go Phase 5.
 
-### Phase 6 — Test
+### Phase 5 — Test
 
 - Forward Auditor-PASS impl to **Tester**. Pass output, file paths, acceptance criteria.
-- Tester returns `STATUS: PASS`? Go Phase 7.
+- Tester returns `STATUS: PASS`? Go Phase 6.
 - Tester returns `STATUS: FAIL`:
   1. Forward FAIL report to **Debugger**.
-  2. Debugger returns Fix Spec + route decision (`CODER` | `TESTER` | `ARCHITECT`).
+  2. Debugger returns Fix Spec + route decision (`CODER` | `TESTER`).
   3. Route Fix Spec to target agent.
-  4. No vague "fix tests" message. Use Debugger's Fix Spec.
-  5. Coder re-impl → Task re-enters Phase 5 (Audit).
+  4. Coder re-impl → Task re-enters Phase 4 (Audit).
 
-### Phase 7 — DevOps
+### Phase 6 — DevOps
 
 - Trigger when **all tasks in cycle** reach Tester PASS. DevOps runs once per cycle.
 - Dispatch **DevOps**: completed tasks, modified files, version intent.
 - DevOps returns `STATUS: PASS | FAIL | BLOCKED`.
 - `FAIL`: resolve violations before DONE.
-- `PASS`: Go Phase 8.
+- `PASS`: Go Phase 7.
 
-### Phase 8 — Update
+### Phase 7 — Update
 
 - Mark tasks `DONE` in `docs/todo.md`.
 - Record version, CHANGELOG ref.
@@ -146,11 +133,9 @@ Before dispatch, verify:
 ## Escalation Rules
 
 - Coder fails task **twice**? No surrender. Re-dispatch. Demand root-cause analysis. Enforce 3rd attempt. Escalate only if 3rd failure critical.
-- Auditor returns `FAIL` **three times**? Architectural defect. Re-invoke Architect.
-- Debugger says `route to: ARCHITECT`? Halt Coder. Re-invoke Architect.
+- Auditor returns `FAIL` **three times**? Planning/Architectural defect. Re-invoke Planner to refine contracts.
+- Debugger says `route to: ARCHITECT`? (Legacy mapping) → Re-invoke Planner.
 - Tester says `FAIL` via `TEST_DEFECT`? Route back to Tester. Bad test != code bug.
-- Architect says `REQUIRES_REVISION` twice? Re-invoke Planner. Decompose failing tasks.
-- DevOps says `FAIL/BLOCKED`? Tasks NOT `DONE` until PASS. DevOps failure = release defect.
 - Output format bad (`docs/handoff-protocol.md`)? Return `PROTOCOL_VIOLATION`. Re-send. No proceeding on malformed handoff.
 
 ---
@@ -184,5 +169,4 @@ Final Status Report:
 - All tasks: DONE
 - Audit summary:
 - Open debt: <limitations/deferred items>
-```ed items or known limitations>
 ```
