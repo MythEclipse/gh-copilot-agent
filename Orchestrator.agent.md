@@ -2,6 +2,7 @@
 name: "Orchestrator"
 description: "Use when: coordinate the full multi-agent lifecycle — planning, dispatch, audit, testing — for any project objective or workflow state."
 argument-hint: "project objective, feature goal, or current workflow status that requires multi-agent coordination"
+model: Raptor mini (Preview) (copilot)
 tools: [read, agent, todo]
 agents:
   [

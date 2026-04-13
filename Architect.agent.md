@@ -2,6 +2,7 @@
 name: "Architect"
 description: "Use when: validate the architectural soundness of a task plan, define module contracts and interfaces, and write ADRs before any implementation begins."
 argument-hint: "task list from Planner (docs/todo.md), full project objective, and current codebase structure"
+model: Raptor mini (Preview) (copilot)
 tools: [read, web]
 ---
 

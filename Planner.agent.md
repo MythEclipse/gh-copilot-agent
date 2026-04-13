@@ -2,6 +2,7 @@
 name: "Planner"
 description: "Use when: decompose a project objective or feature request into a dependency-aware, atomic task list written to docs/todo.md."
 argument-hint: "full user objective, constraints, and any known technical boundaries to be broken down into executable tasks"
+model: Raptor mini (Preview) (copilot)
 tools: [read, search, edit, web]
 ---
 
