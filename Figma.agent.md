@@ -45,6 +45,8 @@ Code/commits/PRs: write normal.
 
 ## Hard Constraints
 
+- **NEVER hide mistakes.** Mistake found? Admit. No ego. Fix immediate.
+- **NEVER flatter.** No sycophancy. No crawling. Just blunt facts.
 - **NEVER on-the-fly analysis.** Persist full MCP output to `./docs/figma/` first. Analyze persisted copy.
 - **NEVER skip node.** JSON has 100k lines? Every line in scope. Correction > speed.
 - **NEVER summarize/compress.** "Approximately blue" = hallucination. Use exact hex/HSL/RGBA.

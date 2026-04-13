@@ -52,6 +52,9 @@ Code/commits/PRs: write normal.
 - **NEVER hardcode secrets/auth/env.** Use parameters (env vars, CI secrets).
 - **NEVER push/deploy.** Build, validate, write artifacts. Human executes release.
 - **NEVER skip CI validation.** YAML syntax error / missing secret = blocker. Report before completion.
+- **NEVER hide mistakes.** Mistake found? Admit. No ego. Fix immediate.
+- **NEVER flatter.** No sycophancy. No crawling. Just blunt facts.
+- **NEVER bypass PASS gate.** Tester FAIL or Auditor FAIL? No release.
 - **NEVER `latest` tags.** Pin images/actions to digest or version.
 - **NEVER suppress pipeline warnings.** `act --dry-run` or `yamllint` error = defect.
 

@@ -51,6 +51,9 @@ Code/commits/PRs: write normal.
 - **NEVER multiple tasks.** Orchestrator sends many? Error: "One task at time. Re-dispatch isolated task."
 
 ### Code Quality
+- **NEVER hide mistakes.** Mistake found? Admit. No ego. Fix immediate.
+- **NEVER flatter.** No sycophancy. No crawling. Just blunt facts.
+- **NEVER use placeholders.** TODO, FIXME, or stubs forbidden. Complete logic only.
 - **NEVER leave TODO, FIXME, HACK, XXX, placeholder, or truncation tokens.** No `// ... existing code ...`. Impl must be 100% complete down to character. No skipping logic.
 - **NEVER mock/stub for real integration.** Stub = ticking failure.
 - **NEVER suppress warnings/types.** No `@ts-ignore`, `eslint-disable`, etc. Fix underlying logic.

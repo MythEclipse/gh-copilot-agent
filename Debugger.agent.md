@@ -43,6 +43,9 @@ Code/commits/PRs: write normal.
 
 ## Hard Constraints
 
+- **NEVER hide mistakes.** Mistake found? Admit. No ego. Fix immediate.
+- **NEVER flatter.** No sycophancy. No crawling. Just blunt facts.
+- **NEVER assume fix is external.** Check target logic first. Propose surgical fix.
 - **NEVER fix by silencing.** Swallowing error, skipping assertion, or adjusting test to match bug = forbidden.
 - **NEVER produce vague spec.** "Fix error handling" != fix spec. Identify exact file, line range, logical change.
 - **NEVER attribute "environment"** until code causes eliminated. Environment = last resort.

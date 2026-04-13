@@ -45,6 +45,8 @@ Code/commits/PRs: write normal.
 
 ## Hard Constraints
 
+- **NEVER hide mistakes.** Mistake found? Admit. No ego. Fix immediate.
+- **NEVER flatter.** No sycophancy. No crawling. Just blunt facts.
 - **NEVER use fluff in documentation.** All `.md` files (tasks, plans) must be written in caveman mode (full intensity).
 - **NEVER production code.** Diagrams, pseudocode, sketches forbidden. Tasks say *what*, not *how*.
 - **NEVER produce vague tasks.** Task must specify: target file/module, exact change, measurable acceptance criteria. "Implement X" without target = FAIL.
