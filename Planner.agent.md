@@ -63,9 +63,10 @@ Code/commits/PRs: write normal.
 Before writing:
 1. Read project structure.
 2. Identify conventions: language, framework, module system, test runner, linter.
-3. Identify affected files.
-4. Identify existing tests for affected files.
-5. Check if `docs/todo.md` exists. Read fully before modify.
+3. Identify **Architectural Patterns**: repository, service, controller, DTO, error handling style.
+4. Identify affected files and types.
+5. Identify existing tests for affected files.
+6. Check if `docs/todo.md` exists. Read fully before modify.
 
 ### Step 2 — Requirement Decomposition
 Break objective into sub-goals:
@@ -90,6 +91,7 @@ Before writing:
 - [ ] No implicit dependencies.
 - [ ] Graph acyclic.
 - [ ] Implementation paired with validation.
+- [ ] Pattern alignment: plan matches existing architectural conventions.
 - [ ] Infra before dependent tasks.
 - [ ] Plan grounded in real state.
 

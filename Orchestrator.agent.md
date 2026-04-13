@@ -84,10 +84,13 @@ Before dispatch, verify:
 ### Phase 2 — Architecture Review
 
 - Forward `docs/todo.md`, objective to **Architect**.
-- Architect must return `STATUS: APPROVED`. `REQUIRES_REVISION` halts pipeline.
-- Architect says `REQUIRES_REVISION`? Route plan defects back to Planner.
+- Architect must return `STATUS: APPROVED` or `STATUS: FIXED_AND_APPROVED`. 
+- `FIXED_AND_APPROVED`? Plan was updated by Architect. Proceed to Dispatch.
+- `REQUIRES_REVISION`? Route plan defects back to Planner. 
 - Inject Architect **Contracts**, **Data Flow Maps**, **Parallelism Map** into dispatch context for Coder.
 - Confirm `docs/adr/` committed before dispatch.
+
+**Fast-Track Rule**: If objective is "Micro-change" (affects < 3 files, clear existing pattern)? Architect phase is optional. Planner can self-architect if confidence is high.
 
 ### Phase 3 — Design Sync (conditional, before Coder)
 

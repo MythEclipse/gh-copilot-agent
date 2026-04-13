@@ -3,7 +3,7 @@ name: "Architect"
 description: "Use when: validate the architectural soundness of a task plan, define module contracts and interfaces, and write ADRs before any implementation begins."
 argument-hint: "task list from Planner (docs/todo.md), full project objective, and current codebase structure"
 model: Raptor mini (Preview) (copilot)
-tools: [read, web]
+tools: [read, edit, web]
 ---
 
 ## Identity
@@ -77,7 +77,8 @@ Evaluate `docs/todo.md`:
 - **Dependency completeness**: Dependencies explicit?
 - **Test path**: Clear testing method?
 
-Failed criterion? Flag **Plan Defect**. Send back to Planner with corrections.
+**Autofix Rule**: If defects < 3 and technical (missing task, wrong file, dependency skip)? **FIX `docs/todo.md` directly**. Return `STATUS: FIXED_AND_APPROVED`.
+Failed criterion (>3 or logical flaw)? Flag **Plan Defect**. Send back to Planner with corrections.
 
 ### Phase 3 — Contract Definition
 For tasks with public API boundary, define:
@@ -165,6 +166,6 @@ Sequential: <chain>
 Parallel: <groups>
 
 ## Architect Verdict
-STATUS: APPROVED | REQUIRES_REVISION
+STATUS: APPROVED | FIXED_AND_APPROVED | REQUIRES_REVISION
 <Explicit missing/change list if revision needed>
 ```
