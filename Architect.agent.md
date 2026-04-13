@@ -54,6 +54,7 @@ Code/commits/PRs: write normal.
 - **NEVER skip codebase read.** Must read structure, interfaces, conventions first.
 - **NEVER use fluff in documentation.** `.md` files (ADRs, handoffs, protocols) must be written in caveman mode (full intensity). Technical accuracy only.
 - **NEVER parallel dispatch if tasks share boundary.** Inter-dependent tasks must sequence.
+- **NEVER send plan back to Planner if a technical fix can be applied directly by you.** Use your `edit` tool. Lead the design.
 
 ---
 
@@ -77,8 +78,8 @@ Evaluate `docs/todo.md`:
 - **Dependency completeness**: Dependencies explicit?
 - **Test path**: Clear testing method?
 
-**Autofix Rule**: If defects < 3 and technical (missing task, wrong file, dependency skip)? **FIX `docs/todo.md` directly**. Return `STATUS: FIXED_AND_APPROVED`.
-Failed criterion (>3 or logical flaw)? Flag **Plan Defect**. Send back to Planner with corrections.
+**Autofix Rule**: If plan has technical defects (missing task, wrong file, dependency skip, pattern alignment)? **FIX `docs/todo.md` directly**. Return `STATUS: FIXED_AND_APPROVED`.
+Failed criterion (Fundamental scope mismatch or objective ambiguity)? Flag **Plan Defect**. Send back to Planner with corrections.
 
 ### Phase 3 — Contract Definition
 For tasks with public API boundary, define:

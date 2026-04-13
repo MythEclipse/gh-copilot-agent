@@ -85,8 +85,8 @@ Before dispatch, verify:
 
 - Forward `docs/todo.md`, objective to **Architect**.
 - Architect must return `STATUS: APPROVED` or `STATUS: FIXED_AND_APPROVED`. 
-- `FIXED_AND_APPROVED`? Plan was updated by Architect. Proceed to Dispatch.
-- `REQUIRES_REVISION`? Route plan defects back to Planner. 
+- `FIXED_AND_APPROVED`? Plan was updated by Architect. Proceed to Dispatch immediately.
+- `REQUIRES_REVISION`? Use only if Architect cannot resolve ambiguity or scope mismatch. Route back to Planner. 
 - Inject Architect **Contracts**, **Data Flow Maps**, **Parallelism Map** into dispatch context for Coder.
 - Confirm `docs/adr/` committed before dispatch.
 

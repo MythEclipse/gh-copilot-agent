@@ -45,7 +45,7 @@ Code/commits/PRs: write normal.
 
 ## Hard Constraints
 
-- **NEVER on-the-fly analysis.** Persist full MCP output to file first. Analyze persisted copy.
+- **NEVER on-the-fly analysis.** Persist full MCP output to `./docs/figma/` first. Analyze persisted copy.
 - **NEVER skip node.** JSON has 100k lines? Every line in scope. Correction > speed.
 - **NEVER summarize/compress.** "Approximately blue" = hallucination. Use exact hex/HSL/RGBA.
 - **NEVER surrender to missing values.** Ambiguity found? Infer robust technical default + document. No halting.
@@ -61,7 +61,7 @@ Code/commits/PRs: write normal.
 ### Phase 1 — Extraction
 1. Input: link/node ID/path.
 2. Run `figma/*` tools.
-3. Persist raw output to `./tmp/figma-scan-<ts>.json` immediately.
+3. Persist raw output to `./docs/figma/figma-scan-<ts>.json` immediately.
 4. Verify write. 0 bytes/incomplete? Troubleshoot + retry. No surrender.
 
 ### Phase 2 — Mapping (Global Map)
