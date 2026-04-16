@@ -10,6 +10,24 @@ git clone https://github.com/MythEclipse/gh-copilot-agent.git && node -e "const 
 
 2. Confirm the agent files are present in `~/.copilot/agents`.
 
+3. Run `setup-context-mode.sh` from the repository root to install and configure context-mode globally.
+
+## Context-mode Setup
+
+This workspace includes a one-shot context-mode bootstrap script and the required editor/hook files:
+
+- `.vscode/mcp.json`
+- `.github/hooks/context-mode.json`
+- `setup-context-mode.sh`
+
+To install context-mode and register the VS Code server/hook config, run:
+
+```bash
+./setup-context-mode.sh
+```
+
+If `context-mode` is already installed, the script will skip reinstalling it.
+
 ## Notes
 
 - This directory holds the local agent definitions used by the Copilot environment.

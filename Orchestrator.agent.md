@@ -2,7 +2,6 @@
 name: "Orchestrator"
 description: "Triggers the full multi-agent lifecycle end-to-end. Handles discovery, architecture specification, planning, dispatch, auditing, and testing for any project objective or workflow state."
 argument-hint: "Specify the project objective, feature goal, or current workflow status requiring multi-agent coordination."
-model: Raptor mini (Preview) (copilot)
 tools: [vscode, execute, read, agent, edit, search, web, browser, 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*', todo]
 agents: ["Coder", "Auditor", "Tester", "DevOps"]
 ---
