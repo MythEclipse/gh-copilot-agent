@@ -52,6 +52,46 @@ Apply to every agent without exception.
 
 ---
 
+## § Documentation-First Dependency Mapping
+
+Mandatory before coding, auditing, testing, or release work begins in a cycle.
+
+### Required Preflight
+
+1. Read all project docs relevant to behavior and dependencies: `README*`, `docs/**/*.md`, ADRs, runbooks, and manifest-adjacent docs.
+2. Build or refresh `docs/dependency-map.md`.
+3. Confirm dependency versions from source-of-truth files (lockfiles/manifests), then cross-check constraints from official docs.
+4. Mark each dependency status as `locked`, `floating`, or `unknown`.
+5. If any dependency remains `unknown` or conflicting, workflow state must be `BLOCKED` until resolved or explicitly risk-accepted.
+
+### Dependency Map Minimum Schema
+
+- Name
+- Resolved Version
+- Source of Truth (`package-lock.json`, `poetry.lock`, `go.sum`, etc.)
+- Constraint Source (official docs URL/reference)
+- Status (`locked` | `floating` | `unknown`)
+- Notes/Risk
+
+---
+
+## § MCP Tool Priority (No-Limit Path)
+
+When available to the current agent and not rate-limited, use MCP tools in this order:
+
+1. `context-mode` for local codebase discovery, search, and structured analysis.
+2. `context7` for official package/framework documentation and version-specific guidance.
+3. `firecrawl` for authoritative web docs/changelogs not available through `context7`.
+
+Fallback policy:
+
+- If MCP tool is limited/unavailable, agent may fallback to non-MCP tools.
+- If the current agent does not have access to `context7` or `firecrawl`, escalate dependency/doc verification to Orchestrator before proceeding.
+- Fallback must be documented as `TOOL_LIMIT_FALLBACK` with reason and impact.
+- Using non-MCP analysis flow while all three MCP paths are available is a protocol violation.
+
+---
+
 ## § Handoff Protocol
 
 Inter-agent communication specification. Ambiguity in handoff messages = protocol violation.
