@@ -1,0 +1,16 @@
+{
+  "protocolVersion": "2.0",
+  "updatedAtUtc": "1970-01-01T00:00:00Z",
+  "cycleId": "cycle-001",
+  "allowedTransitions": {
+    "DISCOVERED": ["SPEC_READY", "BLOCKED"],
+    "SPEC_READY": ["CODED", "BLOCKED"],
+    "CODED": ["AUDIT_PASS", "BLOCKED"],
+    "AUDIT_PASS": ["TEST_PASS", "BLOCKED"],
+    "TEST_PASS": ["RELEASE_READY", "BLOCKED"],
+    "RELEASE_READY": ["DONE", "BLOCKED"],
+    "DONE": [],
+    "BLOCKED": ["DISCOVERED", "SPEC_READY", "CODED", "AUDIT_PASS", "TEST_PASS", "RELEASE_READY"]
+  },
+  "tasks": []
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/handoff-envelope.schema.json",
+  "title": "Agent Handoff Envelope v2",
+  "type": "object",
+  "required": [
+    "handoff_id",
+    "protocol_version",
+    "timestamp_utc",
+    "from_agent",
+    "to_agent",
+    "task_ref",
+    "state_before",
+    "state_after_intent",
+    "checksum_sha256",
+    "payload"
+  ],
+  "properties": {
+    "handoff_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "protocol_version": {
+      "type": "string",
+      "const": "2.0"
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "from_agent": {
+      "type": "string",
+      "enum": ["Orchestrator", "Coder", "Auditor", "Tester", "DevOps", "Figma"]
+    },
+    "to_agent": {
+      "type": "string",
+      "enum": ["Orchestrator", "Coder", "Auditor", "Tester", "DevOps", "Figma"]
+    },
+    "task_ref": {
+      "type": "string",
+      "pattern": "^Task [0-9]+$"
+    },
+    "state_before": {
+      "type": "string",
+      "enum": [
+        "DISCOVERED",
+        "SPEC_READY",
+        "CODED",
+        "AUDIT_PASS",
+        "TEST_PASS",
+        "RELEASE_READY",
+        "DONE",
+        "BLOCKED"
+      ]
+    },
+    "state_after_intent": {
+      "type": "string",
+      "enum": [
+        "DISCOVERED",
+        "SPEC_READY",
+        "CODED",
+        "AUDIT_PASS",
+        "TEST_PASS",
+        "RELEASE_READY",
+        "DONE",
+        "BLOCKED"
+      ]
+    },
+    "checksum_sha256": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$"
+    },
+    "payload": {
+      "type": "object",
+      "minProperties": 1
+    }
+  },
+  "additionalProperties": false
+}

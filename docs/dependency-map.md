@@ -8,15 +8,16 @@ Update in Orchestrator Phase 1 before any implementation dispatch.
 - `locked`: exact version pinned from lockfile/manifests.
 - `floating`: range/alias used; risk of drift.
 - `unknown`: version not resolved yet. Workflow must block until resolved or risk-accepted.
+- `vulnerable`: known advisory exists and mitigation is pending.
 
 ## Dependency Table
 
-| Name | Resolved Version | Source of Truth | Constraint Source | Status | Notes/Risk |
-| --- | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | TBD | unknown | Fill during discovery |
+| Name | Resolved Version | Source of Truth | Constraint Source | Security Source | Security Status | MCP Verification | Status | Notes/Risk |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TBD | TBD | TBD | TBD | TBD | unknown | context7: pending, firecrawl: pending | unknown | Fill during discovery |
 
 ## Conflict Log
 
-| Dependency | Conflict Found In | Decision | Owner | Date |
-| --- | --- | --- | --- | --- |
-| None | - | - | - | - |
+| Dependency | Conflict Found In | Severity | Decision | Owner | Date |
+| --- | --- | --- | --- | --- | --- |
+| None | - | - | - | - | - |

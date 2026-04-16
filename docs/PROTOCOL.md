@@ -1,75 +1,137 @@
 # Agent System Protocol
 
-Canonical specification for all agents in this workflow. Every agent **must** conform to the standards and handoff formats defined here. Inclusion by reference is valid — agents may state `→ docs/PROTOCOL.md` instead of embedding. This document is the single source of truth.
+Canonical spec for all agents in this workflow. This doc is single source of truth.
+Global canonical path: `~/.copilot/agents/docs/PROTOCOL.md`.
+Project path `docs/PROTOCOL.md` is optional overlay only.
 
 ---
 
 ## § Caveman Mode
 
-All agents operate in Caveman Mode (full intensity) by default.
-
-Respond terse like smart caveman. All technical substance stay. Only fluff die.
+All agents run caveman mode by default (full intensity).
+Respond terse, high signal, no fluff.
 
 ### Rules
 
-Drop: articles (a/an/the), filler (just/really/basically/actually/simply), pleasantries (sure/certainly/of course/happy to), hedging. Fragments OK. Short synonyms (big not extensive, fix not "implement a solution for"). Technical terms exact. Code blocks unchanged. Errors quoted exact.
+- Drop filler, pleasantries, hedging.
+- Keep technical terms exact.
+- Keep code blocks unchanged.
+- Quote errors exactly.
 
 Pattern: `[thing] [action] [reason]. [next step].`
 
-Not: "Sure! I'd be happy to help you with that. The issue you're experiencing is likely caused by..."
-Yes: "Bug in auth middleware. Token expiry check use `<` not `<=`. Fix:"
-
 ### Persistence
 
-ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift. Still active if unsure. Off only: "stop caveman" / "normal mode".
-Default: **full**. Switch: `/caveman lite|full|ultra`.
-
-### Intensity Levels
-
-- **lite**: No filler/hedging. Keep articles + full sentences. Professional but tight.
-- **full**: Drop articles, fragments OK, short synonyms. Classic caveman.
-- **ultra**: Abbreviate (DB/auth/config/req/res/fn/impl), strip conjunctions, arrows for causality (X → Y), one word when one word enough.
+- Active every response.
+- Off only: `stop caveman` or `normal mode`.
+- Switch: `/caveman lite|full|ultra`.
 
 ### Auto-Clarity
 
-Drop caveman for: security warnings, irreversible action confirmations, multi-step sequences where fragment order risks misread, user asks to clarify or repeats question. Resume caveman after clear part done.
-
-### Boundaries
-
-Code/commits/PRs: write normal.
-**Documentation (.md files)**: Write in caveman mode (full intensity). No fluff in ADRs, tasks, or changelogs.
-"stop caveman" or "normal mode": revert. Level persist until changed or session end.
+Temporarily use normal style for security warnings, irreversible actions, and complex step ordering.
 
 ---
 
 ## § Universal Hard Constraints
 
-Apply to every agent without exception.
+- **NEVER hide mistakes.** Admit and fix immediately.
+- **NEVER flatter.** Facts only.
+- **NEVER stall on minor ambiguity.** Make robust technical assumption, document it, proceed.
 
-- **NEVER hide mistakes.** Mistake found? Admit. No ego. Fix immediate.
-- **NEVER flatter.** No sycophancy. No crawling. Just blunt facts.
-- **NEVER surrender ambiguity.** Unclear? Make robust technical assumption. Document it. Proceed. Never ask user to clarify trivial scope.
+---
+
+## § Workflow State Machine (V2)
+
+Every task must move through fixed states:
+
+`DISCOVERED -> SPEC_READY -> CODED -> AUDIT_PASS -> TEST_PASS -> RELEASE_READY -> DONE`
+
+### Transition Gates
+
+1. `DISCOVERED -> SPEC_READY`
+   - Docs sweep complete.
+   - Dependency map current.
+   - Risk score computed.
+   - Task lock valid: one scope, one measurable acceptance criterion.
+2. `SPEC_READY -> CODED`
+   - Coder handoff envelope valid.
+   - Contract + flow + ADR refs attached.
+3. `CODED -> AUDIT_PASS`
+   - Auditor verdict `PASS`.
+4. `AUDIT_PASS -> TEST_PASS`
+   - Tester verdict `STATUS: PASS`.
+5. `TEST_PASS -> RELEASE_READY`
+   - Quality Gate score `>= 85/100`.
+   - Dependency security check complete.
+6. `RELEASE_READY -> DONE`
+   - DevOps verdict `STATUS: PASS`.
+   - Version + changelog evidence recorded.
+
+### State Blockers (Hard Stop)
+
+- Dependency version status `unknown`.
+- Cross-file dependency version conflict unresolved.
+- Protocol violation in handoff envelope.
+- Auditor `FAIL` or Tester `FAIL` unresolved.
+- Quality Gate score `< 85`.
+
+---
+
+## § Zero-Setup Auto Bootstrap
+
+Goal: no manual setup per project.
+
+On first run in any repository, Orchestrator must auto-initialize required workflow artifacts before normal planning flow.
+
+### Required Behavior
+
+1. Ensure `docs/` directory exists.
+2. Create missing files only (never overwrite existing content):
+   - `docs/todo.md`
+   - `docs/dependency-map.md`
+   - `docs/workflow-state.json`
+   - `docs/quality-gates.json`
+   - `docs/handoff-log.jsonl`
+   - `docs/observability.md`
+3. Prefer global templates from `~/.copilot/agents/docs/*.template.*`.
+4. If repository-local templates exist, allow them as overrides.
+5. If templates are missing, generate minimal protocol-compliant defaults inline.
+6. Append bootstrap metadata to `docs/handoff-log.jsonl`.
+
+### Global vs Project Protocol Resolution
+
+1. Always apply global canonical protocol from `~/.copilot/agents/docs/PROTOCOL.md`.
+2. If target repo contains `docs/PROTOCOL.md`, treat as overlay.
+3. On conflict, stricter rule wins.
+4. If overlay weakens mandatory safety/quality gates, ignore weakening and keep global rule.
+
+### Failure Policy
+
+- If repository is read-only or writes fail, set workflow state to `BLOCKED` with explicit reason.
+- Never ask user to do routine bootstrap manually unless write access is impossible.
 
 ---
 
 ## § Documentation-First Dependency Mapping
 
-Mandatory before coding, auditing, testing, or release work begins in a cycle.
+Mandatory before coding/audit/testing/release.
 
 ### Required Preflight
 
-1. Read all project docs relevant to behavior and dependencies: `README*`, `docs/**/*.md`, ADRs, runbooks, and manifest-adjacent docs.
-2. Build or refresh `docs/dependency-map.md`.
-3. Confirm dependency versions from source-of-truth files (lockfiles/manifests), then cross-check constraints from official docs.
-4. Mark each dependency status as `locked`, `floating`, or `unknown`.
-5. If any dependency remains `unknown` or conflicting, workflow state must be `BLOCKED` until resolved or explicitly risk-accepted.
+1. Read `README*`, `docs/**/*.md`, ADRs, runbooks, and manifest-adjacent docs.
+2. Build/refresh `docs/dependency-map.md`.
+3. Confirm versions from source-of-truth files (lockfiles/manifests).
+4. Cross-check constraints against official docs.
+5. Set status per dependency: `locked` | `floating` | `unknown`.
+6. Any `unknown`/conflict blocks workflow until resolved or explicit risk acceptance.
 
 ### Dependency Map Minimum Schema
 
 - Name
 - Resolved Version
 - Source of Truth (`package-lock.json`, `poetry.lock`, `go.sum`, etc.)
-- Constraint Source (official docs URL/reference)
+- Constraint Source (official doc URL/ref)
+- Security Source (`OSV`/`CVE` ref) when available
 - Status (`locked` | `floating` | `unknown`)
 - Notes/Risk
 
@@ -77,207 +139,248 @@ Mandatory before coding, auditing, testing, or release work begins in a cycle.
 
 ## § MCP Tool Priority (No-Limit Path)
 
-When available to the current agent and not rate-limited, use MCP tools in this order:
+When available and not rate-limited, use this order:
 
-1. `context-mode` for local codebase discovery, search, and structured analysis.
-2. `context7` for official package/framework documentation and version-specific guidance.
-3. `firecrawl` for authoritative web docs/changelogs not available through `context7`.
+1. `context-mode`: local discovery, indexing, code reasoning, large output processing.
+2. `context7`: official API docs, version compatibility, migration guidance.
+3. `firecrawl`: authoritative external docs/changelogs not covered by `context7`.
+4. Security feeds via MCP if available (`OSV`/`CVE`) for dependency risk validation.
+5. SCM MCP integration if available (PR/issue/release status sync).
 
-Fallback policy:
+### Fallback Policy
 
-- If MCP tool is limited/unavailable, agent may fallback to non-MCP tools.
-- If the current agent does not have access to `context7` or `firecrawl`, escalate dependency/doc verification to Orchestrator before proceeding.
-- Fallback must be documented as `TOOL_LIMIT_FALLBACK` with reason and impact.
-- Using non-MCP analysis flow while all three MCP paths are available is a protocol violation.
+- Fallback allowed only if tool unavailable/limited.
+- Record fallback event as `TOOL_LIMIT_FALLBACK` with:
+  - tool
+  - reason
+  - impact
+  - mitigation
+- If current agent lacks `context7`/`firecrawl`, escalate doc/dependency verification to Orchestrator.
+- Using non-MCP path while MCP path available is protocol violation.
+
+---
+
+## § Risk Scoring and Depth Policy
+
+Each task gets risk score `0..100`:
+
+- Security impact: `0..30`
+- Data integrity impact: `0..25`
+- Concurrency/state complexity: `0..20`
+- Blast radius (modules/APIs touched): `0..15`
+- Dependency volatility: `0..10`
+
+### Required Depth by Score
+
+- `0..34` Low: standard audit + unit tests.
+- `35..69` Medium: full checklist audit + unit + integration + edge tests.
+- `70..100` High: full checklist audit + negative tests + regression suite + manual scenario trace.
+
+---
+
+## § Quality Gate (Definition of Done)
+
+Task/cycle can progress to `RELEASE_READY` only if total score `>= 85/100`:
+
+- Acceptance criteria completeness: `20`
+- Scope compliance: `15`
+- Audit quality: `20`
+- Test adequacy and determinism: `20`
+- Security and dependency hygiene: `15`
+- Documentation integrity (ADR/changelog/notes): `10`
+
+Any category scored `0` blocks release regardless of total.
 
 ---
 
 ## § Handoff Protocol
 
-Inter-agent communication specification. Ambiguity in handoff messages = protocol violation.
+Inter-agent messages must be structured and verifiable.
+
+### Handoff Envelope (Mandatory)
+
+Every handoff must include this envelope:
+
+```yaml
+handoff_id: <uuid>
+protocol_version: "2.0"
+timestamp_utc: <ISO-8601 UTC>
+from_agent: <agent>
+to_agent: <agent>
+task_ref: "Task <N>"
+state_before: <state>
+state_after_intent: <state>
+checksum_sha256: <sha256 of canonical payload>
+payload: <structured body>
+```
+
+If envelope field missing/invalid -> `PROTOCOL_VIOLATION`.
 
 ### Guiding Principles
 
-1. **Explicit over implicit.** Every handoff contains all context the receiving agent needs to operate without asking. Receiver needs to ask? Sender's output was incomplete.
-2. **Verbatim over summarized.** Error outputs, stack traces, audit results passed verbatim — never paraphrased. Paraphrase = information loss = misdiagnosis.
-3. **Structured over prose.** All handoffs use structured formats defined below. Free-form prose is not valid.
-4. **Single source of truth.** `docs/todo.md` is only authoritative task list. Handoffs reference task entries by number; never redefine tasks inline.
+1. Explicit over implicit.
+2. Verbatim over summarized for logs/errors/traces.
+3. Structured over prose.
+4. `docs/todo.md` is single task source of truth.
 
 ---
 
-### Handoff 1 — Orchestrator → Figma (UI tasks only)
+### Handoff 1 - Orchestrator -> Figma (UI only)
 
-**Trigger:** Task is UI/design-related AND user provided Figma channel code.
+Trigger: UI task and user provided Figma channel/code.
 
-```
-## Figma Dispatch
+Payload must include:
 
-Source: <Figma link or node ID>
-Task: <task number and description>
-Target implementation files: <file paths>
-```
+- source
+- task
+- target_files
+- acceptance_criteria
 
-**Return:** Full Figma output — Discrepancy Report + Token Manifest + Recommended Actions. Incorporated into task acceptance criteria before Coder dispatch.
-
----
-
-### Handoff 2 — Orchestrator → Coder
-
-**Trigger:** Task unblocked. Plan + contract/flow specs ready. Figma resolved if applicable.
-
-```
-## Coder Dispatch
-
-Task: Task <N> — <task description>
-Target file(s): <exact file paths>
-Acceptance criterion: <measurable, testable statement>
-
-Orchestrator contract:
-<paste contract spec exactly>
-
-Data flow map:
-<paste data flow map exactly>
-
-ADR references:
-<list of relevant ADR file paths or "None">
-
-Context from prior tasks:
-<types, interfaces, or modules created in Tasks N-1, N-2 that this task depends on>
-
-Constraints:
-- Implement only this task. Do not touch out-of-scope files.
-- All public API members must have JSDoc/TSDoc documentation comments.
-- Zero stubs, no suppression annotations, no code truncation.
-```
-
-**Return:** Full Coder output per Coder Output Format.
+Return: Discrepancy report + token manifest + recommended actions.
 
 ---
 
-### Handoff 3 — Coder → Auditor
+### Handoff 2 - Orchestrator -> Coder
 
-**Trigger:** Coder completes implementation.
+Trigger: task is `SPEC_READY`.
 
-**Payload:** Coder's verbatim output — forwarded without modification. Orchestrator must not filter, summarize, or add to it.
+Payload must include:
 
-```
-## Auditor Dispatch
-
-Original task: Task <N> — <task description>
-Acceptance criterion: <same as sent to Coder>
-Orchestrator contract: <same contract spec>
-
-Coder output:
-<verbatim paste of Coder's full response>
-```
-
-**Return:** Full Auditor output per Auditor Output Format.
+- task and exact acceptance criterion
+- target files
+- orchestrator contract (exact)
+- data flow map (exact)
+- ADR refs
+- prior-task dependency context
+- constraints (no out-of-scope edits, no stubs/suppressions/truncation)
+- risk score + required test depth
 
 ---
 
-### Handoff 4 — Auditor → Tester (on PASS)
+### Handoff 3 - Coder -> Auditor
 
-**Trigger:** Auditor returns `PASS` verdict.
+Trigger: implementation complete (`CODED`).
 
-```
-## Tester Dispatch
-
-Task: Task <N> — <task description>
-Acceptance criterion: <measurable criterion>
-
-Implementation files:
-<list of all modified file paths with line ranges>
-
-Coder's test output (if any tests were run by Coder):
-<verbatim — copied from Coder's output>
-
-Auditor verdict: PASS
-Auditor notes on test adequacy:
-<any notes from Auditor Section 6 on test coverage gaps>
-```
-
-**Return:** Full Tester output per Tester Output Format. If `STATUS: FAIL`, output includes inline classification + Fix Specification (no separate Debugger invocation required).
+Payload: Coder output verbatim. No filtering. No summary.
 
 ---
 
-### Handoff 5 — Tester (FAIL + Fix Spec) → Coder
+### Handoff 4 - Auditor -> Tester
 
-**Trigger:** Tester returns `STATUS: FAIL` with an `IMPLEMENTATION_DEFECT` classification.
+Trigger: Auditor verdict `PASS`.
 
-**Payload:** Tester's verbatim FAIL report including inline Fix Specification — forwarded without modification.
+Payload must include:
 
-```
-## Coder Re-Dispatch (Fix Cycle)
-
-Task: Task <N> — <task description>
-Cycle: Fix attempt <N> of 2 (if attempt 2, Orchestrator escalates after this)
-
-Tester FAIL Report + Fix Specification:
-<verbatim paste of Tester's full FAIL response>
-
-Constraint: Implement only the changes in the Fix Specification.
-Do not modify tests. Do not modify out-of-scope files.
-After implementing, re-run tests and report results.
-```
-
-After Coder re-implements, flow re-enters **Auditor** (not Tester directly).
-
-**Trigger (TEST_DEFECT):** Tester returns `STATUS: FAIL` with class `TEST_DEFECT`. Route Tester's report back to Tester itself. No Coder involvement.
+- task + acceptance criterion
+- modified files
+- Coder test output (verbatim)
+- Auditor coverage notes
 
 ---
 
-### Handoff 6 — Tester PASS → DevOps
+### Handoff 5 - Tester FAIL -> Coder
 
-**Trigger:** Tester returns `STATUS: PASS` for all tasks in current cycle.
+Trigger: Tester `STATUS: FAIL` and class `IMPLEMENTATION_DEFECT`.
 
-```
-## DevOps Dispatch
+Payload: Tester FAIL report + fix specification verbatim.
 
-Cycle summary:
-- Tasks completed this cycle: Task <A>, Task <B>, Task <C>
-- Total files modified: <list>
-
-Version intent: MAJOR | MINOR | PATCH | UNKNOWN (Orchestrator assessment — DevOps validates)
-
-Changeset rationale:
-- Task A: <brief behavioral description>
-- Task B: <brief behavioral description>
-
-Project root: <path>
-```
-
-**Return:** Full DevOps output per DevOps Output Format.
+If class `TEST_DEFECT`, route back to Tester (self-correction).
 
 ---
 
-### Handoff 7 — DevOps PASS → Orchestrator → Mark DONE
+### Handoff 6 - Tester PASS -> DevOps
 
-**Trigger:** DevOps returns `STATUS: PASS`.
+Trigger: all tasks in cycle are `TEST_PASS`.
 
-**Action:** Orchestrator marks all tasks in cycle as `DONE` in `docs/todo.md`, records version + changelog entry reference, unlocks dependent tasks.
+Payload must include:
+
+- cycle summary
+- affected files
+- version intent
+- behavior deltas per task
+
+---
+
+### Handoff 7 - DevOps PASS -> DONE
+
+Trigger: DevOps `STATUS: PASS`.
+
+Action: mark tasks `DONE`, record version/changelog evidence, unlock dependencies.
+
+---
+
+## § Retry Policy and Error Taxonomy
+
+Standard classes:
+
+- `IMPLEMENTATION_DEFECT`
+- `CONTRACT_VIOLATION`
+- `UNHANDLED_ERROR_PATH`
+- `STATE_CORRUPTION`
+- `RACE_CONDITION`
+- `INTEGRATION_DEFECT`
+- `TEST_DEFECT`
+- `ENVIRONMENT_ISSUE`
+- `PROTOCOL_VIOLATION`
+
+Retry policy:
+
+- Coder: up to 3 attempts for implementation defects.
+- Auditor fail 3x: halt and rerun planning/spec.
+- Same class fails 2x in one task: mandatory mini postmortem.
+- `PROTOCOL_VIOLATION`: no retry until payload schema fixed.
+
+---
+
+## § Observability and Postmortem
+
+Track per cycle:
+
+- lead time per state
+- retries per error class
+- audit pass rate
+- test pass rate
+- fallback events count
+- blocked duration
+
+Maintain:
+
+- `docs/workflow-state.json` (current states + timestamps)
+- `docs/quality-gates.json` (scores and rationale)
+- `docs/handoff-log.jsonl` (envelope metadata)
+- `docs/observability.md` (human summary)
+
+Mini postmortem required when same error class repeats 2x+:
+
+- timeline
+- root cause
+- corrective action
+- prevention rule update
 
 ---
 
 ## § Protocol Violation Handling
 
-If any agent receives a handoff that does not conform to specifications above:
+If handoff invalid:
 
-1. **Do not proceed.** Malformed input → garbage output downstream.
-2. **Return PROTOCOL_VIOLATION immediately:**
+1. Do not proceed.
+2. Return:
+
    ```
    ## Protocol Violation
-   Expected: <format name from this document>
-   Missing: <list of missing fields>
-   Cannot proceed until: <exact fields required>
+   Expected: <format>
+   Missing: <fields>
+   Cannot proceed until: <required fields>
    ```
-3. Orchestrator re-sends correct payload.
+
+3. Orchestrator re-sends valid payload.
 
 ---
 
 ## § Message Integrity Rules
 
-- **Never paraphrase** error messages, stack traces, or test output. Pass verbatim.
-- **Never truncate** long outputs with "..." or "[...abbreviated...]". Pass complete text.
-- **Never merge** two agent outputs into one handoff message. Each handoff from one specific agent.
-- **Always include** task number and acceptance criterion in every handoff. Agents never infer what task they are on.
-- **Always include** Orchestrator contract when dispatching Coder, even on fix cycles.
+- Never paraphrase error/test/trace outputs.
+- Never truncate required evidence.
+- Never merge outputs from multiple agents into single handoff body.
+- Always include task ref and acceptance criterion in handoff payload.
+- Always include Orchestrator contract in Coder dispatch and re-dispatch.

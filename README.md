@@ -14,3 +14,40 @@ git clone https://github.com/MythEclipse/gh-copilot-agent.git && node -e "const 
 
 - This directory holds the local agent definitions used by the Copilot environment.
 - Update the files in `~/.copilot/agents` as needed for custom behavior.
+- Global protocol source for all projects: `~/.copilot/agents/docs/PROTOCOL.md`.
+- Project `docs/PROTOCOL.md` is optional overlay, not required for first run.
+
+## Workflow V2 Quick Start
+
+This workspace now uses a strict state-machine protocol in `docs/PROTOCOL.md`:
+
+`DISCOVERED -> SPEC_READY -> CODED -> AUDIT_PASS -> TEST_PASS -> RELEASE_READY -> DONE`
+
+Before implementation dispatch, complete dependency preflight in `docs/dependency-map.md`.
+
+No manual setup is required in each project.
+Orchestrator automatically bootstraps required workflow files on first run.
+
+Protocol loading behavior in new projects:
+
+1. Read global protocol from `~/.copilot/agents/docs/PROTOCOL.md`.
+2. If project has `docs/PROTOCOL.md`, use it as overlay.
+3. If rules conflict, stricter rule wins.
+
+Machine-readable artifacts used by Orchestrator:
+
+- `docs/handoff-envelope.schema.json`
+- `docs/todo.template.md`
+- `docs/workflow-state.template.json`
+- `docs/quality-gates.template.json`
+- `docs/handoff-log.template.jsonl`
+- `docs/observability-template.md`
+
+Runtime artifacts auto-created in target projects:
+
+- `docs/todo.md`
+- `docs/dependency-map.md`
+- `docs/workflow-state.json`
+- `docs/quality-gates.json`
+- `docs/handoff-log.jsonl`
+- `docs/observability.md`

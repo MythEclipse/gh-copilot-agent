@@ -1,0 +1,30 @@
+{
+  "protocolVersion": "2.0",
+  "updatedAtUtc": "1970-01-01T00:00:00Z",
+  "minimumPassScore": 85,
+  "categories": [
+    { "name": "acceptance_criteria_completeness", "max": 20 },
+    { "name": "scope_compliance", "max": 15 },
+    { "name": "audit_quality", "max": 20 },
+    { "name": "test_adequacy_determinism", "max": 20 },
+    { "name": "security_dependency_hygiene", "max": 15 },
+    { "name": "documentation_integrity", "max": 10 }
+  ],
+  "tasks": [
+    {
+      "taskRef": "Task 1",
+      "scores": {
+        "acceptance_criteria_completeness": 0,
+        "scope_compliance": 0,
+        "audit_quality": 0,
+        "test_adequacy_determinism": 0,
+        "security_dependency_hygiene": 0,
+        "documentation_integrity": 0
+      },
+      "total": 0,
+      "pass": false,
+      "blockedReasons": [],
+      "rationale": ""
+    }
+  ]
+}

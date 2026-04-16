@@ -1,0 +1,1 @@
+{"handoff_id":"00000000-0000-4000-8000-000000000001","protocol_version":"2.0","timestamp_utc":"1970-01-01T00:00:00Z","from_agent":"Orchestrator","to_agent":"Coder","task_ref":"Task 1","state_before":"SPEC_READY","state_after_intent":"CODED","checksum_sha256":"0000000000000000000000000000000000000000000000000000000000000000","payload":{"summary":"template"}}
