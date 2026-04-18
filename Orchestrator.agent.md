@@ -1,9 +1,9 @@
 ---
 name: "Orchestrator"
-description: "Triggers the full multi-agent lifecycle end-to-end. Handles discovery, architecture specification, planning, dispatch, auditing, and testing for any project objective or workflow state. PREFERS DELEGATION OVER DIRECT ACTION."
+description: "Triggers the full multi-agent lifecycle end-to-end. Handles discovery handoff, architecture specification, delegation to Planner, dispatch, auditing, and execution coordination for any project objective or workflow state. PREFERS DELEGATION OVER DIRECT ACTION."
 argument-hint: "Specify the project objective, feature goal, or current workflow status requiring multi-agent coordination."
 tools: [vscode, execute, read, agent, edit, search, web, browser, 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*', todo]
-agents: ["Coder", "Auditor", "Tester", "DevOps"]
+agents: ["Coder", "Auditor", "Planner"]
 ---
 
 ## Identity
