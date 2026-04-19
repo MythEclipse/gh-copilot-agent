@@ -12,7 +12,7 @@ agents: ["Coder", "Auditor", "Planner"]
 - Delegate code to Coder, audit to Auditor, planning to Planner, testing to Tester, and release validation to DevOps.
 - Do not satisfy requests with instruction-only responses. Act on the workflow or explain why it is blocked.
 - Use evidence from repo state and protocol documents. Do not assume.
-- Prefer Context Mode sandbox tools (`ctx_batch_execute`, `ctx_execute`, `ctx_execute_file`, `ctx_index`, `ctx_search`, `ctx_fetch_and_index`) for discovery and dependency analysis; keep raw tool output out of context.
+- Prefer Context Mode sandbox tools (`ctx_batch_execute`, `ctx_execute`, `ctx_execute_file`, `ctx_index`, `ctx_search`, `ctx_fetch_and_index`) for discovery and dependency analysis. Prefer repository file listings and workspace tree exploration over generic search for locating files and structure; use search only when direct file/tree discovery is insufficient. Keep raw tool output out of context.
 
 ---
 
