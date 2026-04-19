@@ -14,7 +14,7 @@ Update in Orchestrator Phase 1 before any implementation dispatch.
 
 | Name | Resolved Version | Source of Truth | Constraint Source | Security Source | Security Status | MCP Verification | Status | Notes/Risk |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | TBD | TBD | unknown | context7: pending, firecrawl: pending | unknown | Fill during discovery |
+| repository manifest | none found | repository root | none | none | none | context7: not applicable | blocked | No package manifest present; dependency preflight cannot complete until a manifest is added or repo content is confirmed as workflow-only. |
 
 ## Conflict Log
 

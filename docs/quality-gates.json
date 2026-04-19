@@ -1,6 +1,6 @@
 {
   "protocolVersion": "2.0",
-  "updatedAtUtc": "1970-01-01T00:00:00Z",
+  "updatedAtUtc": "2026-04-19T00:00:00Z",
   "minimumPassScore": 85,
   "categories": [
     { "name": "acceptance_criteria_completeness", "max": 20 },
@@ -10,5 +10,9 @@
     { "name": "security_dependency_hygiene", "max": 15 },
     { "name": "documentation_integrity", "max": 10 }
   ],
-  "tasks": []
+  "tasks": [
+    { "taskRef": "Task 1", "name": "Bootstrap workflow artifacts", "status": "DONE" },
+    { "taskRef": "Task 2", "name": "Create missing Tester.agent.md", "status": "DONE" },
+    { "taskRef": "Task 3", "name": "Analyze and improve agent definitions", "status": "TODO" }
+  ]
 }

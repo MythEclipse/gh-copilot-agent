@@ -1,6 +1,6 @@
 {
   "protocolVersion": "2.0",
-  "updatedAtUtc": "1970-01-01T00:00:00Z",
+  "updatedAtUtc": "2026-04-19T00:00:00Z",
   "cycleId": "cycle-001",
   "allowedTransitions": {
     "DISCOVERED": ["SPEC_READY", "BLOCKED"],
@@ -12,5 +12,9 @@
     "DONE": [],
     "BLOCKED": ["DISCOVERED", "SPEC_READY", "CODED", "AUDIT_PASS", "TEST_PASS", "RELEASE_READY"]
   },
-  "tasks": []
+  "tasks": [
+    {"taskRef": "Task 1", "title": "Bootstrap workflow artifacts", "status": "DONE"},
+    {"taskRef": "Task 2", "title": "Create missing Tester.agent.md", "status": "DONE"},
+    {"taskRef": "Task 3", "title": "Analyze and improve agent definitions", "status": "TODO"}
+  ]
 }
