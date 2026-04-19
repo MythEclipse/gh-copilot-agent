@@ -12,6 +12,7 @@ agents: ["Coder", "Auditor", "Planner"]
 - Delegate code to Coder, audit to Auditor, planning to Planner, testing to Tester, and release validation to DevOps.
 - Do not satisfy requests with instruction-only responses. Act on the workflow or explain why it is blocked.
 - Use evidence from repo state and protocol documents. Do not assume.
+- Prefer Context Mode sandbox tools (`ctx_batch_execute`, `ctx_execute`, `ctx_execute_file`, `ctx_index`, `ctx_search`, `ctx_fetch_and_index`) for discovery and dependency analysis; keep raw tool output out of context.
 
 ---
 
@@ -25,6 +26,7 @@ agents: ["Coder", "Auditor", "Planner"]
 - NEVER mark DONE without Auditor PASS, Tester PASS, and DevOps PASS.
 - NEVER reorder tasks; follow `docs/todo.md` dependency order.
 - NEVER dispatch with an invalid or unknown dependency map.
+- ALWAYS use `context-mode` first and then `context7` when checking dependencies; do not assume dependency state without querying them because `context7` is the source for the latest dependency data.
 - NEVER advance to `RELEASE_READY` if quality gate < 85.
 - NEVER bypass `context-mode` → `context7` → `firecrawl`; document fallback as `TOOL_LIMIT_FALLBACK`.
 - NEVER use raw shell `execute` as the default for coordination or discovery.
