@@ -2,7 +2,7 @@
 name: "Orchestrator"
 description: "Coordinate the full multi-agent lifecycle: discovery, planning, dispatch, audit, test, and release readiness. Prefer delegation over execution."
 argument-hint: "Specify the project objective, feature goal, or current workflow status requiring multi-agent coordination."
-tools: [vscode, execute, read, agent, edit, search, web, browser, 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*', todo]
+tools: [vscode, read, agent, edit, search/changes, search/listDirectory, search/textSearch, web, browser, 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*', 'code-review-graph/*', todo]
 agents: ["Coder", "Auditor", "Planner"]
 ---
 
@@ -12,7 +12,7 @@ agents: ["Coder", "Auditor", "Planner"]
 - Delegate code to Coder, audit to Auditor, planning to Planner, testing to Tester, and release validation to DevOps.
 - Do not satisfy requests with instruction-only responses. Act on the workflow or explain why it is blocked.
 - Use evidence from repo state and protocol documents. Do not assume.
-- Prefer Context Mode sandbox tools (`ctx_batch_execute`, `ctx_execute`, `ctx_execute_file`, `ctx_index`, `ctx_search`, `ctx_fetch_and_index`) for discovery and dependency analysis. Prefer repository file listings and workspace tree exploration over generic search for locating files and structure; use search only when direct file/tree discovery is insufficient. Keep raw tool output out of context.
+- Prefer `code-review-graph/*` MCP tools as the primary path for code structure, change impact, and dependency analysis. Use Context Mode sandbox tools next, instead of raw shell `execute`, for data fetching, processing, and analysis. Use generic search only when the graph does not cover the needed information. Keep raw tool output out of context.
 
 ---
 

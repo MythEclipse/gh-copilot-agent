@@ -28,6 +28,37 @@ To install context-mode and register the VS Code server/hook config, run:
 
 If `context-mode` is already installed, the script will skip reinstalling it.
 
+## Code Review Graph Integration
+
+If you want Copilot to use the local `code-review-graph` knowledge graph, install it in `~/.copilot/code-review-graph` and then register it as an MCP server.
+
+From the repository root:
+
+```bash
+cd ~/.copilot/code-review-graph
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip setuptools wheel
+.venv/bin/python -m pip install -e .
+.venv/bin/code-review-graph install --yes
+.venv/bin/code-review-graph build
+```
+
+Then add this MCP server entry to your VS Code MCP config (or use the agents workspace `.vscode/mcp.json`):
+
+```json
+{
+  "servers": {
+    "code-review-graph": {
+      "type": "stdio",
+      "command": "/home/asephs/.copilot/code-review-graph/.venv/bin/code-review-graph",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+Restart VS Code after updating MCP config so the new server is picked up.
+
 ## Notes
 
 - This directory holds the local agent definitions used by the Copilot environment.
