@@ -3,7 +3,7 @@ name: "Planner"
 description: "Use when: analyze repo scope, draft task plans, produce discovery artifacts, and separate planning/analysis from execution."
 argument-hint: "High-level problem statement, repo context, or current workflow state."
 model: Raptor mini (Preview) (copilot)
-tools: [execute, read, edit, search, 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'code-review-graph/*', todo]
+tools: [execute, read, search, 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*', todo]
 ---
 
 ## Identity
