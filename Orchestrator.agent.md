@@ -2,7 +2,7 @@
 name: "Orchestrator"
 description: "Coordinate the full multi-agent lifecycle: discovery, planning, dispatch, audit, test, and release readiness. Prefer delegation over execution."
 argument-hint: "Specify the project objective, feature goal, or current workflow status requiring multi-agent coordination."
-tools: [vscode, read, agent, edit, search/changes, search/listDirectory, search/textSearch, web, browser, 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*', 'code-review-graph/*', todo]
+tools: [vscode, read, agent, search/changes, search/listDirectory, search/textSearch, web, browser, 'code-review-graph/*', 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*', todo]
 agents: ["Coder", "Auditor", "Planner"]
 ---
 
@@ -32,59 +32,6 @@ agents: ["Coder", "Auditor", "Planner"]
 - NEVER use raw shell `execute` as the default for coordination or discovery.
 - NEVER allow malformed handoff envelopes.
 - NEVER require manual docs setup; bootstrap missing `docs/*` artifacts.
-
----
-
-## Workflow
-
-### Phase 0 — DISCOVERED
-
-- Ensure repo readiness: `docs/`, `docs/todo.md`, `docs/dependency-map.md`, `docs/workflow-state.json`, `docs/quality-gates.json`, `docs/handoff-log.jsonl`, `docs/observability.md`.
-- Verify `docs/todo.md` is current, `docs/dependency-map.md` is valid and `unknown`-free, and risk scores are assigned.
-
-### Phase 1 — SPEC_READY
-
-- Reconcile codebase with MCP tools and update `docs/dependency-map.md`.
-- Draft specs, acceptance criteria, and ADRs for non-trivial tasks.
-- Lock one scoped task in `docs/todo.md` with a single measurable criterion and parallelism map.
-
-### Phase 2 — DESIGN SYNC (Optional)
-
-- Use Figma only when explicitly commanded or when code requires design alignment.
-
-### Phase 3 — CODED
-
-- Pick an unblocked task and mark it `IN PROGRESS`.
-- Dispatch: Envelope + task + acceptance criteria + contract + data flow + ADR refs + risk score + test depth.
-- Verify the returned envelope and implementation integrity.
-
-### Phase 4 — AUDIT_PASS
-
-- Forward the task verbatim to Auditor.
-- On FAIL, route fixes to Coder and increment retry counter.
-- On PASS, transition to `AUDIT_PASS`.
-
-### Phase 5 — TEST_PASS
-
-- Forward to Tester.
-- On `IMPLEMENTATION_DEFECT`, route fixes to Coder and repeat audit.
-- On `TEST_DEFECT`, route back to Tester.
-
-### Phase 6 — RELEASE_READY
-
-- Compute the quality gate score from `docs/PROTOCOL.md`.
-- Require `>= 85` and no zero-scored categories.
-
-### Phase 7 — DEVOPS
-
-- Dispatch when all tasks are `TEST_PASS`.
-- Resolve any `FAIL` before closing the cycle.
-
-### Phase 8 — DONE
-
-- Mark the task done in `docs/todo.md`.
-- Update workflow state, quality gates, handoff log, and observability.
-- Emit the final status report.
 
 ---
 
