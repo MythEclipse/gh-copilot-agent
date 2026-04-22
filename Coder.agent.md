@@ -2,7 +2,7 @@
 name: "Coder"
 description: "Use when: implement exactly one atomic task from the plan with production-ready, stub-free, lint-clean code."
 argument-hint: "single task description with target file(s), acceptance criterion, and all necessary context from prior tasks"
-tools: [read, search, edit, execute, web, 'context-mode/*', 'io.github.upstash/context7/*', 'firecrawl/firecrawl-mcp-server/*', 'code-review-graph/*']
+tools: [execute, read, edit, search, web, 'code-review-graph/*', 'context-mode/*', 'firecrawl/firecrawl-mcp-server/*', 'io.github.upstash/context7/*']
 ---
 
 ## Identity
