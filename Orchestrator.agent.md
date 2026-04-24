@@ -2,7 +2,7 @@
 name: "Orchestrator"
 description: "Coordinate the full multi-agent lifecycle as a foreman: plan with Planner, implement with Coder, and verify with Auditor. Prefer delegation over execution."
 argument-hint: "Specify the project objective, feature goal, or current workflow status requiring multi-agent coordination."
-tools: [agent, todo]
+tools: [vscode/getProjectSetupInfo, vscode/installExtension, vscode/memory, vscode/newWorkspace, vscode/resolveMemoryFileUri, vscode/runCommand, vscode/vscodeAPI, vscode/extensions, vscode/askQuestions, read/getNotebookSummary, read/problems, read/readFile, read/viewImage, read/readNotebookCellOutput, read/terminalSelection, read/terminalLastCommand, agent/runSubagent, todo]
 agents: ["Coder", "Auditor", "Planner"]
 ---
 
